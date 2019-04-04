@@ -35,6 +35,7 @@ let detailText1 = [
   "Bb 大調 / G 小調",
   "F 大調 / D 小調"
 ]
+let detailTextSize = 22;
 
 let coreRatio = 0.57;
 let coreType = "Detail";
@@ -60,7 +61,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(400, 400);
   ellipseMode(CENTER);
   colorMode(HSB, 100);
   //colors
@@ -75,6 +76,11 @@ function setup() {
   minorC1 = color(80, 30, 75);
   minorC2 = color(80, 30, 65);
   minorCT = color(80, 10, 90);
+
+  outTextSize = width * 0.01875;
+  majorTextSize = width * 0.0275;
+  minorTextSize = width * 0.02125;
+  detailTextSize = width * 0.0275;
 
   lockButton = createButton('[Locked]');
   lockButton.position(19, 19);
@@ -205,7 +211,7 @@ function drawCoreDetail(ang) {
   fill(20);
   noStroke();
   textAlign(CENTER);
-  textSize(22);
+  textSize(detailTextSize);
   text(detailText1[highlighted()], 0, height * 0.1);
 
   imageMode(CENTER);
@@ -217,26 +223,26 @@ function drawCoreDetail(ang) {
 
     case 5:
       stroke(0);
-      strokeWeight(2);
+      strokeWeight(width/400);
       line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
-      strokeWeight(1);
+      strokeWeight(width/800);
       drawKeySig(5, -0.16, 1);
       drawKeySig(-7, 0.02, 1);
       break;
     case 6:
       stroke(0);
-      strokeWeight(2);
+      strokeWeight(width/400);
       line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
-      strokeWeight(1);
+      strokeWeight(width/800);
       drawKeySig(6, -0.16, 1);
       drawKeySig(-6, 0.02, 1);
 
       break;
     case -5:
       stroke(0);
-      strokeWeight(2);
+      strokeWeight(width/400);
       line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
-      strokeWeight(1);
+      strokeWeight(width/800);
       drawKeySig(7, -0.16, 1);
       drawKeySig(-5, 0.02, 1);
       break;

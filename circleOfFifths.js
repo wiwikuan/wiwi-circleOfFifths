@@ -49,6 +49,16 @@ let angle = -3.5; // 1 = 1/12 TAU, global angle
 
 let locked = true;
 
+let imgStaff;
+let imgSharp;
+let imgFlat;
+
+function preload() {
+  imgStaff = loadImage("./staff.png");
+  imgFlat = loadImage("./flat.png");
+  imgSharp = loadImage("./sharp.png");
+}
+
 function setup() {
   createCanvas(800, 800);
   ellipseMode(CENTER);
@@ -197,8 +207,65 @@ function drawCoreDetail(ang) {
   textAlign(CENTER);
   textSize(22);
   text(detailText1[highlighted()], 0, height * 0.1);
+
+  imageMode(CENTER);
+  image(imgStaff, 0, height * -0.03, width / 2, height * 0.15);
+  let sig = highlighted();
+  sig = (sig > 6) ? sig - 12 : sig;
+  // dbText = sig;
+  switch (sig) {
+
+    case 5:
+      stroke(0);
+      strokeWeight(2);
+      line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
+      strokeWeight(1);
+      drawKeySig(5, -0.16, 1);
+      drawKeySig(-7, 0.02, 1);
+      break;
+    case 6:
+      stroke(0);
+      strokeWeight(2);
+      line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
+      strokeWeight(1);
+      drawKeySig(6, -0.16, 1);
+      drawKeySig(-6, 0.02, 1);
+
+      break;
+    case -5:
+      stroke(0);
+      strokeWeight(2);
+      line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
+      strokeWeight(1);
+      drawKeySig(7, -0.16, 1);
+      drawKeySig(-5, 0.02, 1);
+      break;
+    default:
+      drawKeySig(sig, -0.16, 1);
+  }
+
+
+
 }
 
+function drawKeySig(sig, x, y) {
+  let sx = x;
+  let sp = 0.02;
+  if (sig > 0) {
+    imageMode(CENTER);
+    let sy = [-0.066, -0.039, -0.077, -0.0475, -0.017, -0.0575, -0.02875];
+    for (i = 0; i < sig; i++) {
+      image(imgSharp, width * (sx + (i * sp)), height * sy[i], width / 16, height / 16);
+    }
+  }
+  if (sig < 0) {
+    imageMode(CENTER);
+    let sy = [-0.0289, -0.059, -0.021, -0.049, -0.012, -0.04, -0.002];
+    for (i = 0; i < abs(sig); i++) {
+      image(imgFlat, width * (sx + (i * sp)), height * sy[i], width / 16, height / 16);
+    }
+  }
+}
 
 function drawCoreEmpty(ang) {
   fill(100);
@@ -224,13 +291,12 @@ function mouseAngle(ang) {
   let i = map(h, -PI, PI, 6, 18);
   // let j = (i - ang);
   mouseDir = (i > 12) ? i - 12 : i;
-  // dbText = `${h}, ${i}, ${mouseDir}`;
+  dbText = `${(mouseX-width/2)/width}, ${(mouseY-height/2)/height}`;
 
 }
 
 function rotateGlobal() {
   acc = (mouseX - width / 2) / width;
-  dbText = acc;
   if (abs(acc) > 0.4) {
     vel += acc / 70;
     vel = constrain(vel, -0.1, 0.1);
@@ -257,5 +323,5 @@ function draw() {
   drawMinor(angle);
   drawMinorText(angle);
   drawCore(angle);
-  // debugText();
+  debugText();
 }

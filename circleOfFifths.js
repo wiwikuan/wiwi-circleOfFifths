@@ -4,36 +4,36 @@ let outC2;
 let outCH;
 let outCT;
 let outCSP; // 分隔
-let outText = ["沒有升降", "1 個 #", "2 個 #", "3 個 #", "4 個 #", "5 個 # / 7 個 b", "6 個 # / 6 個 b", "7 個 # / 5 個 b", "4 個 b", "3 個 b", "2 個 b", "1 個 b"]
+let outText = ["沒有升降", "1 個 #", "2 個 #", "3 個 #", "4 個 #", "7 個 b / 5 個 #", "6 個 b / 6 個 #", "5 個 b / 7 個 #", "4 個 b", "3 個 b", "2 個 b", "1 個 b"]
 let outTextSize = 15;
 
 let majorRatio = 0.74;
 let majorC1;
 let majorC2;
 let majorCT;
-let majorText = ["C", "G", "D", "A", "E", "B/Cb", "F#/Gb", "C#/Db", "Ab", "Eb", "Bb", "F"]
+let majorText = ["C", "G", "D", "A", "E", "Cb/B", "Gb/F#", "Db/C#", "Ab", "Eb", "Bb", "F"]
 let majorTextSize = 22;
 
 let minorRatio = 0.65;
 let minorC1;
 let minorC2;
 let minorCT;
-let minorText = ["Am", "Em", "Bm", "F#m", "C#m", "G#m/Abm", "D#m/Ebm", "A#m/Bbm", "Fm", "Cm", "Gm", "Dm"]
+let minorText = ["Am", "Em", "Bm", "F#m", "C#m", "Abm/G#m", "Ebm/D#m", "Bbm/A#m", "Fm", "Cm", "Gm", "Dm"]
 let minorTextSize = 17;
 
 let detailText1 = [
-  "C 大調 / A 小調",
-  "G 大調 / E 小調",
-  "D 大調 / B 小調",
-  "A 大調 / F# 小調",
-  "E 大調 / C# 小調",
-  "B 或 Cb 大調 / G# 或 Ab 小調",
-  "F# 或 Gb 大調 / D# 或 Eb 小調",
-  "C# 或 Db 大調 / A# 或 Bb 小調",
-  "Ab 大調 / F 小調",
-  "Eb 大調 / C 小調",
-  "Bb 大調 / G 小調",
-  "F 大調 / D 小調"
+  "C 大調 ─ A 小調",
+  "G 大調 ─ E 小調",
+  "D 大調 ─ B 小調",
+  "A 大調 ─ F# 小調",
+  "E 大調 ─ C# 小調",
+  "Cb 大調 ─ Ab 小調 / B 大調 ─ G# 小調",
+  "Gb 大調 ─ Eb 小調 / F# 大調 ─ D# 小調",
+  "Db 大調 ─ Bb 小調 / C# 大調 ─ A# 小調",
+  "Ab 大調 ─ F 小調",
+  "Eb 大調 ─ C 小調",
+  "Bb 大調 ─ G 小調",
+  "F 大調 ─ D 小調"
 ]
 let detailTextSize = 22;
 
@@ -54,6 +54,9 @@ let imgStaff;
 let imgSharp;
 let imgFlat;
 
+let modeLabel = ["Major/Minor", "Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian"];
+
+
 function preload() {
   imgStaff = loadImage("./staff.png");
   imgFlat = loadImage("./flat.png");
@@ -61,7 +64,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(800, 800);
   ellipseMode(CENTER);
   colorMode(HSB, 100);
   //colors
@@ -82,18 +85,20 @@ function setup() {
   minorTextSize = width * 0.02125;
   detailTextSize = width * 0.0275;
 
-  lockButton = createButton('[Locked]');
+  lockButton = createButton('[已鎖定]');
   lockButton.position(19, 19);
   lockButton.mousePressed(toggleLocked);
 
+  //modeSlider = createSlider(0, 7, 0, 1);
+  //modeSlider.position(width - 160, 19);
 }
 
 function toggleLocked() {
   if (locked) {
-    lockButton.html("Lock");
+    lockButton.html("鎖定");
     locked = false;
   } else {
-    lockButton.html("[Locked]");
+    lockButton.html("[已鎖定]");
     locked = true;
   }
 
@@ -212,46 +217,87 @@ function drawCoreDetail(ang) {
   noStroke();
   textAlign(CENTER);
   textSize(detailTextSize);
-  text(detailText1[highlighted()], 0, height * 0.1);
+  text(detailText1[highlighted()], 0, height * 0.08);
 
   imageMode(CENTER);
   image(imgStaff, 0, height * -0.03, width / 2, height * 0.15);
   let sig = highlighted();
   sig = (sig > 6) ? sig - 12 : sig;
+
+  //
+
+
   // dbText = sig;
   switch (sig) {
-
     case 5:
       stroke(0);
-      strokeWeight(width/400);
+      strokeWeight(width / 400);
       line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
-      strokeWeight(width/800);
-      drawKeySig(5, -0.16, 1);
-      drawKeySig(-7, 0.02, 1);
+      strokeWeight(width / 800);
+      drawKeySig(5, 0.02, 1);
+      drawKeySig(-7, -0.16, 1);
+      drawSigNumber(5, -7);
       break;
     case 6:
       stroke(0);
-      strokeWeight(width/400);
+      strokeWeight(width / 400);
       line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
-      strokeWeight(width/800);
-      drawKeySig(6, -0.16, 1);
-      drawKeySig(-6, 0.02, 1);
-
+      strokeWeight(width / 800);
+      drawKeySig(6, 0.02, 1);
+      drawKeySig(-6, -0.16, 1);
+      drawSigNumber(6, -6);
       break;
     case -5:
       stroke(0);
-      strokeWeight(width/400);
+      strokeWeight(width / 400);
       line(width * -0.008, height * -0.066, width * -0.008, height * 0.009);
-      strokeWeight(width/800);
-      drawKeySig(7, -0.16, 1);
-      drawKeySig(-5, 0.02, 1);
+      strokeWeight(width / 800);
+      drawKeySig(7, 0.02, 1);
+      drawKeySig(-5, -0.16, 1);
+      drawSigNumber(7, -5);
       break;
     default:
       drawKeySig(sig, -0.16, 1);
+      drawSigNumber((sig > 0) ? sig : 0, (sig < 0) ? sig : 0);
   }
 
 
+}
 
+function drawSigNumber(s, f) {
+  // draw center one
+  noStroke();
+  fill(80);
+  let acci = [
+    "Fb", "Cb", "Gb", "Db", "Ab", "Eb", "Bb", "",
+    "F#", "C#", "G#", "D#", "A#", "E#", "B#"
+  ]
+  let sp = 0.024; // space
+  let w = 0.02; // width
+  let h = 0.004; // height
+  rectMode(CENTER);
+  textAlign(CENTER);
+  for (i = -7; i < 8; i++) {
+    switch (true) {
+      case (i < 0): // flat
+        fill(20, (i < f) ? 20 : 100, (i < f) ? 90 : 70);
+        break;
+      case (i > 0): // sharp
+        fill(100, (i > s) ? 20 : 90, (i < s) ? 90 : 80);
+        break;
+      default:
+        fill(80);
+        textSize(width / 60);
+        text("♮", 0, height * 0.14);
+        fill(60);
+    }
+    rect((0 + sp * i) * width, height * 0.12, height * w, height * h);
+    textSize(width / 74);
+    text(acci[i + 7], (0 + sp * i) * width, height * 0.138);
+  }
+  textSize(width / 60);
+  fill(90);
+  text(`（${-f} 個降記號 / ${s} 個升記號）`, 0, height * 0.16);
 }
 
 function drawKeySig(sig, x, y) {
@@ -329,5 +375,6 @@ function draw() {
   drawMinor(angle);
   drawMinorText(angle);
   drawCore(angle);
-  debugText();
+  draw
+  // debugText();
 }

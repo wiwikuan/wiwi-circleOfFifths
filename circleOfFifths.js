@@ -40,7 +40,7 @@ let detailTextSize = 22;
 let coreRatio = 0.57;
 let coreType = "Detail";
 
-let dbText = "This is the default debug text."
+let dbText = "Circle of Fifths by NiceChord (Wiwi Kuan)"
 
 let mouseDir;
 
@@ -56,6 +56,7 @@ let imgFlat;
 
 let modeLabel = ["Major/Minor", "Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian"];
 
+let paintingArray = new Array();
 
 function preload() {
   imgStaff = loadImage("./staff.png");
@@ -89,8 +90,7 @@ function setup() {
   lockButton.position(19, 19);
   lockButton.mousePressed(toggleLocked);
 
-  //modeSlider = createSlider(0, 7, 0, 1);
-  //modeSlider.position(width - 160, 19);
+
 }
 
 function toggleLocked() {
@@ -101,7 +101,6 @@ function toggleLocked() {
     lockButton.html("[已鎖定]");
     locked = true;
   }
-
 }
 
 function highlighted() {
@@ -116,6 +115,7 @@ function highlighted() {
 
 function drawOuter(ang) {
   stroke(outCSP);
+  strokeWeight(width / 600);
   for (i = 0; i < 12; i++) {
     fill((i % 2 == 0) ? outC1 : outC2);
 
@@ -333,6 +333,7 @@ function drawCoreBlack(ang) {
 
 function debugText() {
   fill(0);
+  noStroke();
   textAlign(CENTER);
   text(dbText, 0, height * 0.45);
 }
@@ -341,9 +342,8 @@ function mouseAngle(ang) {
   let v = createVector(mouseX - width / 2, mouseY - height / 2);
   let h = v.heading(); // -PI ~ PI
   let i = map(h, -PI, PI, 6, 18);
-  // let j = (i - ang);
   mouseDir = (i > 12) ? i - 12 : i;
-  dbText = `${(mouseX-width/2)/width}, ${(mouseY-height/2)/height}`;
+  // dbText = `${(mouseX-width/2)/width}, ${(mouseY-height/2)/height}`;
 
 }
 
@@ -362,6 +362,8 @@ function rotateGlobal() {
   angle += vel;
 }
 
+
+
 function draw() {
   background(95);
   translate(width / 2, height / 2);
@@ -375,6 +377,6 @@ function draw() {
   drawMinor(angle);
   drawMinorText(angle);
   drawCore(angle);
-  draw
-  // debugText();
+  debugText();
+
 }

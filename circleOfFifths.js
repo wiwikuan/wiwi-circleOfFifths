@@ -3,8 +3,8 @@ let outC1;
 let outC2;
 let outCH;
 let outCT;
-let outCSP; // åˆ†éš”
-let outText = ["æ²’æœ‰å‡é™", "1 å€‹ #", "2 å€‹ #", "3 å€‹ #", "4 å€‹ #", "7 å€‹ b / 5 å€‹ #", "6 å€‹ b / 6 å€‹ #", "5 å€‹ b / 7 å€‹ #", "4 å€‹ b", "3 å€‹ b", "2 å€‹ b", "1 å€‹ b"]
+let outCSP; // 分隔
+let outText = ["沒有升降", "1 個 #", "2 個 #", "3 個 #", "4 個 #", "7 個 b / 5 個 #", "6 個 b / 6 個 #", "5 個 b / 7 個 #", "4 個 b", "3 個 b", "2 個 b", "1 個 b"]
 let outTextSize = 15;
 
 let majorRatio = 0.74;
@@ -22,18 +22,18 @@ let minorText = ["Am", "Em", "Bm", "F#m", "C#m", "Abm/G#m", "Ebm/D#m", "Bbm/A#m"
 let minorTextSize = 17;
 
 let detailText1 = [
-  "C å¤§èª¿ â”€ A å°èª¿",
-  "G å¤§èª¿ â”€ E å°èª¿",
-  "D å¤§èª¿ â”€ B å°èª¿",
-  "A å¤§èª¿ â”€ F# å°èª¿",
-  "E å¤§èª¿ â”€ C# å°èª¿",
-  "Cb å¤§èª¿ â”€ Ab å°èª¿ / B å¤§èª¿ â”€ G# å°èª¿",
-  "Gb å¤§èª¿ â”€ Eb å°èª¿ / F# å¤§èª¿ â”€ D# å°èª¿",
-  "Db å¤§èª¿ â”€ Bb å°èª¿ / C# å¤§èª¿ â”€ A# å°èª¿",
-  "Ab å¤§èª¿ â”€ F å°èª¿",
-  "Eb å¤§èª¿ â”€ C å°èª¿",
-  "Bb å¤§èª¿ â”€ G å°èª¿",
-  "F å¤§èª¿ â”€ D å°èª¿"
+  "C 大調 ─ A 小調",
+  "G 大調 ─ E 小調",
+  "D 大調 ─ B 小調",
+  "A 大調 ─ F# 小調",
+  "E 大調 ─ C# 小調",
+  "Cb 大調 ─ Ab 小調 / B 大調 ─ G# 小調",
+  "Gb 大調 ─ Eb 小調 / F# 大調 ─ D# 小調",
+  "Db 大調 ─ Bb 小調 / C# 大調 ─ A# 小調",
+  "Ab 大調 ─ F 小調",
+  "Eb 大調 ─ C 小調",
+  "Bb 大調 ─ G 小調",
+  "F 大調 ─ D 小調"
 ]
 let detailTextSize = 22;
 
@@ -86,7 +86,7 @@ function setup() {
   minorTextSize = width * 0.02125;
   detailTextSize = width * 0.0275;
 
-  lockButton = createButton('[å·²éŽ–å®š]');
+  lockButton = createButton('[已鎖定]');
   lockButton.position(19, 19);
   lockButton.mousePressed(toggleLocked);
 
@@ -95,10 +95,10 @@ function setup() {
 
 function toggleLocked() {
   if (locked) {
-    lockButton.html("éŽ–å®š");
+    lockButton.html("鎖定");
     locked = false;
   } else {
-    lockButton.html("[å·²éŽ–å®š]");
+    lockButton.html("[已鎖定]");
     locked = true;
   }
 }
@@ -131,7 +131,7 @@ function drawOuter(ang) {
 
 function drawOuterText(ang) {
   for (i = 0; i < 12; i++) {
-    let j = i + ang + 3.5; // æŠŠç¬¬ä¸€å€‹å­—ç•«åˆ°å³æ–¹
+    let j = i + ang + 3.5; // 把第一個字畫到右方
     push();
     rotate(TAU * (j / 12));
     textAlign(CENTER);
@@ -286,7 +286,7 @@ function drawSigNumber(s, f) {
       default:
         fill(80);
         textSize(width / 60);
-        text("â™®", 0, height * 0.14);
+        text("♮", 0, height * 0.14);
         fill(60);
     }
     rect((0 + sp * i) * width, height * 0.12, height * w, height * h);
@@ -295,7 +295,7 @@ function drawSigNumber(s, f) {
   }
   textSize(width / 60);
   fill(90);
-  text(`ï¼ˆ${-f} å€‹é™è¨˜è™Ÿ / ${s} å€‹å‡è¨˜è™Ÿï¼‰`, 0, height * 0.16);
+  text(`（${-f} 個降記號 / ${s} 個升記號）`, 0, height * 0.16);
 }
 
 function drawKeySig(sig, x, y) {
